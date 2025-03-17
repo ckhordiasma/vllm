@@ -31,6 +31,8 @@ spec:
     value: Dockerfile.ubi
   - name: path-context
     value: .
+  - name: additional-build-secret
+    value: rhel-ai-private-index-auth
   taskRunSpecs:
     - pipelineTaskName: ecosystem-cert-preflight-checks
       computeResources:
