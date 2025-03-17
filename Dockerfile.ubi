@@ -50,6 +50,22 @@ RUN microdnf install -y \
     microdnf clean all && \
     ln -s ${CUDA_HOME}/lib64/stubs/libcuda.so /usr/lib64/
 
+## Wheel Install #################################################################
+FROM dev as build
+
+# Download the release artifact and copy the requirements and
+# constraints files out of it. We use the input requirements file
+# because that tells us which versions of top level packages to
+# install and we use the *output* constraints file because that tells
+# us the versions that fromager has computed as part of the
+# collection.
+ARG WHEEL_RELEASE_ARTIFACTS=https://gitlab.com/api/v4/projects/64622502/packages/pypi/simple
+
+RUN --mount=type=secret,id=rhel-ai-private-index-auth/BOT_PAT \
+    source ${VIRTUAL_ENV}/bin/activate && \
+    echo -e "machine gitlab.com\nlogin ckodama\npassword $(cat /run/secrets/rhel-ai-private-index-auth/BOT_PAT)" > ${HOME}/.netrc && \
+    uv pip install vllm --index-url ${WHEEL_RELEASE_ARTIFACTS}
+    && rm -rf ${HOME}/.netrc
 
 
 # ## Python cuda base #################################################################
