@@ -38,8 +38,8 @@ RUN microdnf install -y dnf openssl-devel \
     && python${PYTHON_VERSION} -m venv ${VIRTUAL_ENV} \
     && python -m pip install -U pip uv \
     && uv pip install wheel build setuptools setuptools_scm setuptools_rust meson-python cmake ninja cython scikit_build_core scikit_build \
-    && curl -L https://ftp2.osuosl.org/pub/ppc64el/openblas/latest/Openblas_${OPENBLAS_VERSION}_ppc64le.tar.gz -o /out.tar.gz && file /out.tar.gz \
-    && curl -sL https://ftp2.osuosl.org/pub/ppc64el/openblas/latest/Openblas_${OPENBLAS_VERSION}_ppc64le.tar.gz | tar xvf - -C /usr/local \
+    && curl --version && tar --version \
+    && curl -L https://ftp2.osuosl.org/pub/ppc64el/openblas/latest/Openblas_${OPENBLAS_VERSION}_ppc64le.tar.gz -o /out.tar.gz && file /out.tar.gz && tar xvf /out.tar.gz -C /usr/local && rm /out.tar.gz \
     && curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y \
     && cd /tmp && touch control
 
